@@ -25,6 +25,11 @@ public class TrendingNewsController {
 	@Autowired
 	EventService eventService;
 
+	
+	@GetMapping("/test")
+	public String testMethod() {
+		return "This is a test response which confirms that the API is working fine";
+	}
 	@GetMapping("/getAllCities")
 	public List<String> getAllCities() {
 		return this.locationService.getAllCities();
