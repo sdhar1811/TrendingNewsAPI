@@ -15,29 +15,16 @@ import com.trendingnews.model.LocationModel;
 
 public class QueryUtil {
 
-	public static void executeQuery(String query) {
-		QueryExecution executor = QueryExecutionFactory.sparqlService(TrendingNewsConstants.SPARQL_SERVICE_ENDPOINTS,
-				query);
-		ResultSet resultSet = executor.execSelect();
-
-		while (resultSet.hasNext()) {
-			QuerySolution solution = resultSet.nextSolution();
-			RDFNode subject = solution.get("?subject");
-			if (subject == null) {
-				System.out.println("NULL:" + solution.get("subject"));
-			} else {
-				System.out.println("subject:" + subject.toString());
-			}
-
-		}
-
-	}
+	
 
 	public static List<String> fetchCities() {
 
 		QueryExecution exe = QueryExecutionFactory.sparqlService(TrendingNewsConstants.SPARQL_SERVICE_ENDPOINTS,
 				TrendingNewsConstants.PREFIX + TrendingNewsConstants.FETCH_CITY_LIST);
-
+		
+		
+		
+		
 		ResultSet resultSet = exe.execSelect();
 		ArrayList<String> cityList = new ArrayList<String>();
 
@@ -60,8 +47,7 @@ public class QueryUtil {
 
 		ResultSet resultSet = exe.execSelect();
 		ArrayList<String> categoryList = new ArrayList<String>();
-
-		// ResultSetFormatter.out(System.out,resultSet);
+		
 		while (resultSet.hasNext()) {
 			QuerySolution solution = resultSet.nextSolution();
 			RDFNode node = solution.get("?class");
@@ -76,14 +62,16 @@ public class QueryUtil {
 	}
 
 	public static List<EventModel> getEventDetails(String keyWord) {
-		String query = String.format(TrendingNewsConstants.FETCH_EVENT_DETAILS, keyWord);
+		String query =TrendingNewsConstants.PREFIX + String.format(TrendingNewsConstants.FETCH_EVENT_DETAILS, keyWord);
+		
+		
 		QueryExecution exe = QueryExecutionFactory.sparqlService(TrendingNewsConstants.SPARQL_SERVICE_ENDPOINTS,
-				TrendingNewsConstants.PREFIX + query);
+				 query);
 
 		ResultSet resultSet = exe.execSelect();
 		ArrayList<EventModel> eventList = new ArrayList<EventModel>();
 
-		// ResultSetFormatter.out(System.out, resultSet);
+		
 		String city = null;
 		double score = 0.0;
 		String pressSourceName = null;
@@ -129,13 +117,13 @@ public class QueryUtil {
 
 		String query = String.format(TrendingNewsConstants.FETCH_LOCATION_DETAILS, cityId, cityId, cityId,
 				date.substring(0, date.indexOf("T")));
-//		System.out.println(query);
+		
 		QueryExecution exe = QueryExecutionFactory.sparqlService(TrendingNewsConstants.SPARQL_SERVICE_ENDPOINTS,
 				TrendingNewsConstants.PREFIX + query);
 
 		ResultSet resultSet = exe.execSelect();
 		LocationModel locationModel = null;
-		//ResultSetFormatter.out(System.out, resultSet);
+		
 		while (resultSet.hasNext()) {
 			QuerySolution solution = resultSet.nextSolution();
 			String stateName = solution.get("?stateName").toString();
@@ -190,7 +178,7 @@ public class QueryUtil {
 		String query = String.format(TrendingNewsConstants.FETCH_EVENT_BASED_ON_FILTER, key,cityName,dateTemp,categoryTemp);	
 		
 		
-		System.out.println(query);
+		
 		QueryExecution exe = QueryExecutionFactory.sparqlService(TrendingNewsConstants.SPARQL_SERVICE_ENDPOINTS,
 				TrendingNewsConstants.PREFIX + query);
 		
@@ -199,7 +187,7 @@ public class QueryUtil {
 		ResultSet resultSet = exe.execSelect();
 		ArrayList<EventModel> eventList = new ArrayList<EventModel>();
 
-		// ResultSetFormatter.out(System.out, resultSet);
+		
 		String city = null;
 		double score = 0.0;
 		String pressSourceName = null;
